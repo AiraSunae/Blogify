@@ -237,18 +237,18 @@ MAIL_APP_PW = os.environ.get("PASSWORD_KEY")
 @secure
 def contact():
     if request.method == "POST":
-        send_email(request.form.get("name"), request.form.get("email"), request.form.get("phone"), request.form.get("message"))
+        send(request.form.get("name"), request.form.get("email"), request.form.get("phone"), request.form.get("message"))
         return render_template("contact.html", msg_sent=True)
     
     return render_template("contact.html", msg_sent=False)
 
 
-def send_email(name, email, phone, message):
+def send(name, email, phone, message):
     email_message = f"Subject:New Message\n\nName: {name}\nEmail: {email}\nPhone: {phone}\nMessage:{message}"
     with smtplib.SMTP("smtp.gmail.com") as connection:
         connection.starttls()
         connection.login(MAIL_ADDRESS, MAIL_APP_PW)
-        connection.sendmail(email, MAIL_ADDRESS, email_message)
+        connection.sendmail(from_addr=email, to_addrs=MAIL_ADDRESS, msg=email_message)
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
