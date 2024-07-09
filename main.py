@@ -234,6 +234,7 @@ MAIL_ADDRESS = os.environ.get("EMAIL_KEY")
 MAIL_APP_PW = os.environ.get("PASSWORD_KEY")
 
 @app.route("/contact", methods=["GET", "POST"])
+@secure
 def contact():
     if request.method == "POST":
         send_email(request.form.get("name"), request.form.get("email"), request.form.get("phone"), request.form.get("message"))
